@@ -9,10 +9,9 @@ enum {
 };
 #endif
 
-const uint LED_PIN = 25;
-
 enum class LEDS : uint {
-  BUILT_IN_LED = LED_PIN,
+  BUILT_IN_LED,
+  NUMBER_OF_LEDS,
 };
 
 void LED_init(void);
