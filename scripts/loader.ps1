@@ -1,5 +1,26 @@
 # This script should be called from the root of a set of projects. Each folder should contain a build folder
 
+# If a argument was sent then handle it and don't do dialog
+param ($Project)
+if ($Project -ne $null) {
+  cd $Project
+  $project_folders = Get-ChildItem -Attributes Directory -Exclude $exclude_list -Name -Filter build
+  if (($project_folders | measure | % {$_.Count}) -eq 1) {
+    $scripts_path = $PSScriptRoot + '\load.ps1'
+    invoke-expression -Command $scripts_path
+    if ($LASTEXITCODE -eq 0) {
+      cd ..
+      Write-Output 'Loaded!'
+    } else {
+      Write-Output 'Error: Could not find Pico'
+    }
+  } else {
+    Write-Output "Build directory could not be located"
+  }
+  cd ..
+  exit
+}
+
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
